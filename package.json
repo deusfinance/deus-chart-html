@@ -13,6 +13,7 @@
     "node-dev": "^6.2.0"
   },
   "scripts": {
-    "start": "node-dev src/app.js"
+    "start": "node src/app.js",
+    "dev": "node-dev src/app.js"
   }
 }
