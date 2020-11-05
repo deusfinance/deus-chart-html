@@ -1,0 +1,23 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <title>DEUS.finance Chart</title>
+        <script
+            type="text/javascript"
+            src="charting_library/charting_library.min.js">
+        </script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.2/socket.io.js"></script>
+        <script type="module" src="widget.js"></script>
+        <script>
+
+            // Store available symbols in localStorage, not the best solution but it works
+            localStorage.setItem('symbols', '<%-symbols%>')
+
+        </script>
+    </head>
+    <body style="margin:0px;">
+        <div id="tv_chart_container">
+            <!-- This div will contain the Charting Library widget. -->
+        </div>
+    </body>
+</html>
