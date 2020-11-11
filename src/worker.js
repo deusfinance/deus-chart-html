@@ -10,16 +10,35 @@ module.exports = class Worker {
     // TODO: use offline version of symbols in dev
     async initSymbols() {
 
-        const sp500 = await this.makeApiRequest(`https://finnhub.io/api/v1/index/constituents?symbol=^GSPC&token=${process.env.FINNHUB_API_KEY}`);
-        const nasdaq = await this.makeApiRequest(`https://finnhub.io/api/v1/index/constituents?symbol=^NDX&token=${process.env.FINNHUB_API_KEY}`);
+        let sp500 = await this.makeApiRequest(`https://finnhub.io/api/v1/index/constituents?symbol=^GSPC&token=${process.env.FINNHUB_API_KEY}`);
+        let nasdaq = await this.makeApiRequest(`https://finnhub.io/api/v1/index/constituents?symbol=^NDX&token=${process.env.FINNHUB_API_KEY}`);
 
-        // Merge the two exchanges
+        sp500 = sp500.constituents.map(symbol => {
+            return {
+                symbol: symbol,
+                pair: "USD"
+            }
+        })
+        nasdaq = nasdaq.constituents.map(symbol => {
+            return {
+                symbol: symbol,
+                pair: "USD"
+            }
+        })
+
+        // Merge the exchanges
         const data = {
-            SP500: sp500.constituents,
-            Nasdaq: nasdaq.constituents
+            "DEUS_Swap": [
+              {
+                symbol: "ETH",
+                pair: "BTC"
+              }
+            ],
+            SP500: sp500,
+            Nasdaq: nasdaq
         }
 
-        // We do not resolve the symbols here, for now let it happen client-side.
+        // We do not resolve the symbols here, this happens client-side.
         return this.symbols = data;
 
     } // End of initSymbols()

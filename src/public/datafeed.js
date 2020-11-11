@@ -30,13 +30,14 @@ export default class Datafeed {
 
 						const assets = data[exchange.value];
 						const symbols = assets.map(asset => {
-								const symbol = generateSymbol(exchange.value, asset, "USD"); // TODO: need to make "USD" more dynamic
+								const symbol = generateSymbol(exchange.value, asset.symbol, asset.pair);
 								return {
 										symbol: symbol.short,
+										pair: asset.pair,
 										full_name: symbol.full,
 										description: symbol.short,
 										exchange: exchange.value,
-										type: 'stock',
+										type: exchange.type,
 								};
 						});
 						allSymbols = [...allSymbols, ...symbols];
@@ -78,11 +79,12 @@ export default class Datafeed {
 						name: symbolItem.symbol,
 						description: symbolItem.description,
 						type: symbolItem.type,
+						pair: symbolItem.pair,
 						session: '24x7',
 						timezone: 'Etc/UTC',
 						exchange: symbolItem.exchange,
 						minmov: 1,
-						pricescale: 100,
+						pricescale: 10000,
 						has_intraday: true,
 						has_no_volume: false,
 						has_weekly_and_monthly: true,
@@ -97,32 +99,15 @@ export default class Datafeed {
 
 				this.debug && console.log('[getBars]: Method call', symbolInfo, resolution, from, to);
 
-				// Finnhub API accepts the fields, whilst Tradingview works with the keys.
-				// TODO: make this less ugly
-				const interval = {
-						"1": "1",
-						"1m": "1",
-						"5": "5",
-						"5m": "5",
-						"15": "15",
-						"15m": "15",
-						"30": "30",
-						"30m": "30",
-						"60": "60",
-						"60m": "60",
-						"D": "D",
-						"1D": "D",
-						"W": "W",
-						"1W": "W",
-						"M": "M",
-						"1M": "M"
-				}[resolution]
+				const parsedSymbol = parseFullSymbol(symbolInfo.full_name);
 
 				// TODO: create urlParameters from class in different file and not here
-				const parsedSymbol = parseFullSymbol(symbolInfo.full_name);
 				const urlParameters = {
+						exchange: symbolInfo.exchange,
+						type: symbolInfo.type,
 						symbol: parsedSymbol.fromSymbol,
-						resolution: interval,
+						pair: symbolInfo.pair,
+						resolution: resolution,
 						from: from,
 						to: to
 				}
@@ -134,15 +119,27 @@ export default class Datafeed {
 
 				try {
 
-					// const data = await makeApiRequest(`https://finnhub.io/api/v1/stock/candle?${query}`);
 						const data = await makeApiRequest(`${window.location.href}candles?${query}`)
+						this.resolveBars(data, symbolInfo, from, to, firstDataRequest, onHistoryCallback)
+				} catch (error) {
+						console.log('[getBars]: Get error', error);
+						onErrorCallback(error);
+				} // End of try-catch
 
-						if (data.s != "ok" || data.c.length <= 1) {
-								return onHistoryCallback([], { noData: true	});
-						}
+		} // End of getBars()
 
-						const new_bars = data.t.reduce((acc, bar, index) => {
+		resolveBars(data, symbolInfo, from, to, firstDataRequest, onHistoryCallback) {
 
+				const isInvalidData = (symbolInfo.type == "Stocks")
+						? data.s != "ok" || data.c.length <= 1
+						: data.length <= 1;
+
+				if (isInvalidData) {
+						return onHistoryCallback([], { noData: true	});
+				}
+
+				const reduceStocks = (data) => {
+						return data.t.reduce((acc, bar, index) => {
 								if (bar <= from && bar > to) return acc;
 								const obj = {
 									time: bar * 1000,
@@ -154,24 +151,38 @@ export default class Datafeed {
 								};
 								acc.push(obj);
 								return acc;
-
 						}, [])
+				}
 
-						if (firstDataRequest) {
-								this.lastBarsCache.set(symbolInfo.full_name, {
-									...new_bars[new_bars.length - 1],
-								});
-						}
+				const reduceCrypto = (data) => {
+						return data.reduce((acc, bar, index) => {
+								if (bar.t <= from && bar.t > to) return acc;
+								const obj = {
+									time: bar.t * 1000,
+									low: bar.l,
+									high: bar.h,
+									open: bar.o,
+									close: bar.c,
+									volume: bar.qv,
+								};
+								acc.push(obj);
+								return acc;
+						}, [])
+				}
 
-						this.debug && console.log(`[getBars]: returned ${new_bars.length} bar(s)`);
-						onHistoryCallback(new_bars, {	noData: false });
+				const new_bars = (symbolInfo.type == "Stock")
+						? reduceStocks(data)
+						: reduceCrypto(data);
 
-				} catch (error) {
-						console.log('[getBars]: Get error', error);
-						onErrorCallback(error);
-				} // End of try-catch
+				if (firstDataRequest) {
+						this.lastBarsCache.set(symbolInfo.full_name, {
+							...new_bars[new_bars.length - 1],
+						});
+				}
 
-		} // End of getBars()
+				this.debug && console.log(`[getBars]: returned ${new_bars.length} bar(s)`);
+				onHistoryCallback(new_bars, {	noData: false });
+		}
 
 		// This function is currently disabled (it does exactly nothing)
 		subscribeBars (symbolInfo, resolution, onRealtimeCallback, subscribeUID, onResetCacheNeededCallback) {

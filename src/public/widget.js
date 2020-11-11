@@ -3,7 +3,8 @@ import Datafeed from './datafeed.js';
 
 window.tvWidget = new TradingView.widget({
 		debug: true,
-		symbol: 'Nasdaq:AAPL/USD', // default symbol
+		// symbol: 'Nasdaq:AAPL/USD', // default symbol
+		symbol: 'DEUS_Swap:ETH/BTC', // default symbol
 		interval: 'D', // default interval
 		fullscreen: true, // displays the chart in the fullscreen mode
 		container_id: 'tv_chart_container',
