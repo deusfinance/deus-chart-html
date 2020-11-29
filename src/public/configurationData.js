@@ -2,7 +2,7 @@ export const configurationData = {
     supports_marks: false,
     supports_timescale_marks: false,
     supports_time: true,
-  	supported_resolutions: ['60', 'D' ],
+  	supported_resolutions: ['1', '60', 'D' ],
   	exchanges: [
         {
           value: 'DEUS_Swap', // `exchange` argument for the `searchSymbols` method, if a user selects this exchange
