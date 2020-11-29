@@ -30,8 +30,8 @@ module.exports = class Worker {
         const data = {
             "DEUS_Swap": [
               {
-                symbol: "ETH",
-                pair: "BTC"
+                symbol: "DEUS",
+                pair: "ETH"
               }
             ],
             SP500: sp500,
