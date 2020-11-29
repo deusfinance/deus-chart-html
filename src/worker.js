@@ -28,7 +28,7 @@ module.exports = class Worker {
 
         // Merge the exchanges
         const data = {
-            "DEUS_Swap": [
+            "DEUS Swap": [
               {
                 symbol: "DEUS",
                 pair: "ETH"
