@@ -31,10 +31,15 @@ router.get("/candles", (req, res) => {
     // TODO: remove database candlesticks from Queue
     Queue.add(() => {
         fetch(url)
-            .then(res => res.json())
+            .then(res => {
+                // In case the database is down.
+                return (res.status != 200)
+                    ? []
+                    : res.json();
+            })
             .then(json => res.send(json))
         .catch(err => {
-          console.log(err);
+            console.error(err);
         })
     })
 

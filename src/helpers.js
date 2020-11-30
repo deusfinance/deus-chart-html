@@ -4,9 +4,9 @@ const self = module.exports = {
 
     /**
      * @param {query.exchange} String Nasdaq or DEUS-Swap etc
-     * @param {query.type} String
-     * @param {query.symbol} String
-     * @param {query.resolution} String
+     * @param {query.type} String Crypto or Stocks
+     * @param {query.symbol} String AAPL, DEUS etc
+     * @param {query.resolution} String the interval, this is different per exchange API
      * @param {query.from} String UNIX // seconds
      * @param {query.to} String UNIX // seconds
      * @output {url} String
@@ -38,6 +38,7 @@ const self = module.exports = {
         		"M": "M",
         		"1M": "M"
         }[resolution]
+
         return `https://finnhub.io/api/v1/stock/candle?symbol=${symbol}&resolution=${interval}&from=${from}&to=${to}&token=${process.env.FINNHUB_API_KEY}`
     },
 
