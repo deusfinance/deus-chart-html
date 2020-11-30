@@ -1,10 +1,9 @@
 // Datafeed implementation, will be added later
 import Datafeed from './datafeed.js';
 
-window.tvWidget = new TradingView.widget({
+const widget = window.tvWidget = new TradingView.widget({
 		debug: true,
-		// symbol: 'Nasdaq:AAPL/USD', // default symbol
-		symbol: 'DEUS_Swap:DEUS/ETH', // default symbol
+		symbol: 'DEUS Swap:DEUS/ETH', // default symbol
 		interval: 'D', // default interval
 		fullscreen: true, // displays the chart in the fullscreen mode
 		container_id: 'tv_chart_container',
@@ -16,5 +15,6 @@ window.tvWidget = new TradingView.widget({
 		charts_storage_api_version: "1.1",
 		client_id: 'tradingview.com',
 		user_id: 'public_user_id',
+		theme: "Dark",
 		timezone: Intl.DateTimeFormat().resolvedOptions().timeZone
 });

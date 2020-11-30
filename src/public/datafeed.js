@@ -1,7 +1,6 @@
 import {
 	makeApiRequest,
 	generateSymbol,
-	parseFullSymbol,
 } from './helpers.js';
 import {
 	configurationData
@@ -32,7 +31,7 @@ export default class Datafeed {
 						const symbols = assets.map(asset => {
 								const symbol = generateSymbol(exchange.value, asset.symbol, asset.pair);
 								return {
-										symbol: symbol.short,
+										symbol: asset.symbol,
 										pair: asset.pair,
 										full_name: symbol.full,
 										description: symbol.short,
@@ -76,20 +75,21 @@ export default class Datafeed {
 
 				// TODO: make this dynamic
 				onSymbolResolvedCallback({
-						name: symbolItem.symbol,
+						name: symbolItem.description, // needs fixing (this is the upperleft symbol in the chart)
 						description: symbolItem.description,
 						type: symbolItem.type,
+						symbol: symbolItem.symbol,
 						pair: symbolItem.pair,
 						session: '24x7',
 						timezone: 'Etc/UTC',
 						exchange: symbolItem.exchange,
 						minmov: 1,
-						pricescale: 10000,
+						pricescale: 1000000, // TODO: make this dynamic per token.
 						has_intraday: true,
-						has_no_volume: false,
+						has_no_volume: true, // TODO: set to false when we've fixed the volume, something looks weird
 						has_weekly_and_monthly: true,
 						supported_resolutions: configurationData.supported_resolutions,
-						volume_precision: 2,
+						volume_precision: 100, // TODO: something is wrong with the volume
 						data_status: 'streaming',
 				});
 
@@ -99,13 +99,11 @@ export default class Datafeed {
 
 				this.debug && console.log('[getBars]: Method call', symbolInfo, resolution, from, to);
 
-				const parsedSymbol = parseFullSymbol(symbolInfo.full_name);
-
 				// TODO: create urlParameters from class in different file and not here
 				const urlParameters = {
 						exchange: symbolInfo.exchange,
 						type: symbolInfo.type,
-						symbol: parsedSymbol.fromSymbol,
+						symbol: symbolInfo.symbol,
 						pair: symbolInfo.pair,
 						resolution: resolution,
 						from: from,
@@ -163,7 +161,7 @@ export default class Datafeed {
 									high: bar.h,
 									open: bar.o,
 									close: bar.c,
-									volume: bar.qv,
+									volume: bar.v,
 								};
 								acc.push(obj);
 								return acc;
