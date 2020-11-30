@@ -16,6 +16,5 @@ const widget = window.tvWidget = new TradingView.widget({
 		client_id: 'tradingview.com',
 		user_id: 'public_user_id',
 		theme: "Dark",
-		preset: "mobile",
 		timezone: Intl.DateTimeFormat().resolvedOptions().timeZone
 });
