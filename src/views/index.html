@@ -2,12 +2,18 @@
 <html>
     <head>
         <title>DEUS.finance Chart</title>
+        <link rel='shortcut icon' type='image/x-icon' href='/img/favicon.ico' />
+        
+        <!-- Fix for iOS Safari zooming bug -->
+    		<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0">
+    		<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+
         <script
             type="text/javascript"
             src="charting_library/charting_library.min.js">
         </script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.2/socket.io.js"></script>
-        <script type="module" src="widget.js"></script>
+        <script type="module" src="/js/widget.js"></script>
         <script>
 
             // Store available symbols in localStorage, not the best solution but it works
