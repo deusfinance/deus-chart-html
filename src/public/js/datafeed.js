@@ -128,6 +128,7 @@ export default class Datafeed {
 
 		resolveBars(data, symbolInfo, from, to, firstDataRequest, onHistoryCallback) {
 
+				// TODO: wrap this in a helper function & test it
 				const isInvalidData = (symbolInfo.type == "Stocks")
 						? data.s != "ok" || data.c.length <= 1
 						: data.length <= 1;

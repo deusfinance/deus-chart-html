@@ -10,10 +10,13 @@
     "node-fetch": "^2.6.1"
   },
   "devDependencies": {
+    "livereload": "^0.9.1",
     "node-dev": "^6.2.0"
   },
   "scripts": {
     "start": "node src/app.js",
-    "dev": "node-dev src/app.js"
+    "dev": "node-dev src/app.js",
+    "reload": "node dev/hotreload.js",
+    "hot-dev": "concurrently --kill-others \"npm run start\" \"npm run reload\""
   }
 }

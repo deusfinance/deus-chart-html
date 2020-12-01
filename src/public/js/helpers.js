@@ -18,3 +18,9 @@ export function generateSymbol(exchange, fromSymbol, toSymbol) {
 		}
 
 }
+
+export function getLanguageFromURL(){
+		return 'en'
+		if (navigator.languages != undefined) return navigator.languages[1]; // TODO: check what languages are supported in charting_library/static and which arent
+	  return navigator.language;
+}
