@@ -1,6 +1,7 @@
 import {
-	makeApiRequest,
+	makeApiRequestJSON,
 	generateSymbol,
+	makeNotification,
 } from './helpers.js';
 import {
 	configurationData
@@ -15,8 +16,9 @@ export default class Datafeed {
 
 		onReady(callback) {
 				this.debug && console.log('[onReady]: Method call');
-
 				this.symbols = this.getSymbols();
+				this.widget = window.tvWidget;
+
 				callback(configurationData);
 		} // End of onReady()
 
@@ -116,8 +118,11 @@ export default class Datafeed {
 						.join('&');
 
 				try {
-
-						const data = await makeApiRequest(`${window.location.href}candles?${query}`)
+						const data = await makeApiRequestJSON(`${window.location.href}candles?${query}`)
+						if (data.isApiDown) {
+								makeNotification(this.widget, 'Our DEUS Swap API is currently offline. Apologies for the inconvenience, we will be back up soon. In the meantime, you can still chart SP500 & NASDAQ stocks. Thank you for your patience.')
+								return this.resolveBars([], symbolInfo, from, to, firstDataRequest, onHistoryCallback)
+						}
 						this.resolveBars(data, symbolInfo, from, to, firstDataRequest, onHistoryCallback)
 				} catch (error) {
 						console.log('[getBars]: Get error', error);

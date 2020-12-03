@@ -7,21 +7,20 @@
         <!-- Fix for iOS Safari zooming bug -->
     		<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0">
     		<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+
+        <!-- Listen to hot reloads when developing. // TODO: migrate to webpack reloads -->
         <script>
-            // Listen to hot reloads when developing. // TODO: migrate to webpack reloads
             if (document.location.hostname == "localhost") {
               document.write('<script src="http://localhost:35729/livereload.js?snipver=1"></' + 'script>')
             }
         </script>
-        <script
-            type="text/javascript"
-            src="charting_library/charting_library.min.js">
-        </script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.2/socket.io.js"></script>
+
+        <!-- Charting Library -->
+        <script type="text/javascript" src="charting_library/charting_library.min.js"> </script>
         <script type="module" src="/js/widget.js"></script>
         <script>
 
-            // Store available symbols in localStorage, not the best solution but it works
+            // Store res.locals in localStorage to access in JS, not the best solution but it works
             localStorage.setItem('symbols', '<%-symbols%>')
 
         </script>

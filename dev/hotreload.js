@@ -15,6 +15,7 @@ liveReloadServer.on('error', (err) => {
 });
 
 liveReloadServer.watch([
-    path.join(__dirname, '../src/public/js'),
-    path.join(__dirname, '../src/views/')
+    // path.join(__dirname, '../src/public/js'),
+    // path.join(__dirname, '../src/views/')
+    path.join(__dirname, '../src/')
 ]);

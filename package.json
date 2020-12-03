@@ -17,6 +17,7 @@
     "start": "node src/app.js",
     "dev": "node-dev src/app.js",
     "reload": "node dev/hotreload.js",
-    "hot-dev": "concurrently --kill-others \"npm run start\" \"npm run reload\""
+    "open": "start http://localhost:3000",
+    "hot-dev": "concurrently \"npm run open\" \"npm run dev\" \"npm run reload\""
   }
 }

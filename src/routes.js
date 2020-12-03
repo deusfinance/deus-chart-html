@@ -16,9 +16,9 @@ router.use(async (req, res, next) => {
     next()
 })
 
-router.get("/", (req, res) => {
+router.get("/", async (req, res) => {
     res.render("index.html", {
-        symbols: JSON.stringify(Worker.getSymbols())
+        symbols: JSON.stringify(await Worker.getSymbols())
     })
 })
 
@@ -27,15 +27,18 @@ router.get("/candles", (req, res) => {
 
     const url = Helpers.buildUrlFromQuery(req.query)
 
+    // Return when API is down, isApiDown() is run by a cronjob so this is not foolproof when request is made before the next health check.
+    if (req.query.exchange == "DEUS Swap" && Worker.getIsApiDown()) return res.send(JSON.stringify({isApiDown: true}))
+
     // Queue takes care of the Finnhub API rate limit
     // TODO: remove database candlesticks from Queue
     Queue.add(() => {
         fetch(url)
-            .then(res => {
-                // In case the database is down.
-                return (res.status != 200)
-                    ? []
-                    : res.json();
+            .then(resDB => {
+                // In case the database API is down and wasn't catched by Worker.isApiDown()
+                return (resDB.status != 200)
+                    ? JSON.stringify({isApiDown: true})
+                    : resDB.json();
             })
             .then(json => res.send(json))
         .catch(err => {
