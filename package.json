@@ -1,23 +1,48 @@
 {
-  "name": "deus-tradingview",
+  "name": "vuejs",
   "version": "0.1.0",
-  "description": "Implementation of the TradingView Charting Library JS API for DEUS Swap data.",
+  "private": true,
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build",
+    "lint": "vue-cli-service lint"
+  },
   "dependencies": {
-    "bottleneck": "^2.19.5",
-    "dotenv": "^8.2.0",
-    "ejs": "^3.1.5",
-    "express": "^4.16.3",
-    "node-fetch": "^2.6.1"
+    "vue": "~2.5.17"
   },
   "devDependencies": {
-    "livereload": "^0.9.1",
-    "node-dev": "^6.2.0"
+    "@vue/cli-plugin-babel": "^3.9.2",
+    "@vue/cli-plugin-eslint": "3.0.4",
+    "@vue/cli-service": "^3.9.3",
+    "babel-core": "6.26.3",
+    "babel-loader": "7.1.5",
+    "node-sass": "~4.9.4",
+    "sass-loader": "~7.1.0",
+    "style-loader": "~0.23.1",
+    "vue-template-compiler": "~2.5.17"
   },
-  "scripts": {
-    "start": "node src/app.js",
-    "dev": "node-dev src/app.js",
-    "reload": "node dev/hotreload.js",
-    "open": "start http://localhost:3000",
-    "hot-dev": "concurrently \"npm run open\" \"npm run dev\" \"npm run reload\""
-  }
+  "eslintConfig": {
+    "root": true,
+    "env": {
+      "node": true
+    },
+    "extends": [
+      "plugin:vue/essential",
+      "eslint:recommended"
+    ],
+    "rules": {},
+    "parserOptions": {
+      "parser": "babel-eslint"
+    }
+  },
+  "postcss": {
+    "plugins": {
+      "autoprefixer": {}
+    }
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not ie <= 8"
+  ]
 }

@@ -1,17 +1,21 @@
-# DEUS-swap-chart
-Implementation of the TradingView Charting Library JS API for DEUS Swap data.
+# TradingView Charting Library and Vue.js Integration Example (TypeScript)
 
-## Install
-Run `npm install` to install all dependencies.
+## How to start
 
-## Getting Started
-Rename the `.sample.dev` file and fill in the blanks, for the fields contact any of our maintainers, whether it be here on Github or on Telegram.
+1. Install dependencies `npm install`.
+1. Copy `charting_library` folder from https://github.com/tradingview/charting_library/ to `/public` folder. The earliest supported version of the Charting Library is 1.12. If you get 404 then you need to [request an access to this repository](https://www.tradingview.com/HTML5-stock-forex-bitcoin-charting-library/).
+1. Copy `charting_library.min.js` from https://github.com/tradingview/charting_library/ to `/src` folder.
+1. Copy `datafeeds` folder from https://github.com/tradingview/charting_library/ to `/public`.
+1. Run `npm run serve`. It will build the project and open a default browser with the Charting Library.
 
-## How to run
-+ `npm run start` for production environments
-+ `npm run dev` to restart the server on each code change, needful for backend development
-+ `npm run reload` for a hotreload server, useless on its own
-+ `npm run hot-dev` to run `dev`, with an added browser hotreload for changes within /src/views and /public/js.
+## What is Charting Library
 
-## Contribute
-When proposing PR's please use our `dev` branch. 
+Charting Library is a standalone solution for displaying charts. This free, downloadable library is hosted on your servers and is connected to your data feed to be used in your website or app. [Learn more and download](https://www.tradingview.com/HTML5-stock-forex-bitcoin-charting-library/).
+
+## What is Vue.js
+
+Vue is a progressive framework for building user interfaces. Unlike other monolithic frameworks, Vue is designed from the ground up to be incrementally adoptable. The core library is focused on the view layer only, and is easy to pick up and integrate with other libraries or existing projects.
+
+## About This Project
+
+This project was bootstrapped with [Vue CLI](https://cli.vuejs.org/).
