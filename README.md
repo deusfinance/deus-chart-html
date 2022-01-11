@@ -1,4 +1,5 @@
-# DEPRICATED
+# DEPRECATED
+
 # TradingView Charting Library and Vue.js Integration Example (TypeScript)
 
 ## How to start
